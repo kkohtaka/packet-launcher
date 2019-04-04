@@ -17,6 +17,12 @@ rules:
   - patch
   - delete
 - apiGroups:
+  - ""
+  resources:
+  - secret
+  verbs:
+  - get
+- apiGroups:
   - admissionregistration.k8s.io
   resources:
   - mutatingwebhookconfigurations

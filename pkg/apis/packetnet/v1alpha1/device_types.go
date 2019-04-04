@@ -22,10 +22,57 @@ import (
 
 // DeviceSpec defines the desired state of Device
 type DeviceSpec struct {
+	ProjectID    string `json:"projectID"`
+	Facility     string `json:"facility"`
+	Plan         string `json:"plan"`
+	Hostname     string `json:"hostname"`
+	OS           string `json:"os"`
+	BillingCycle string `json:"billing_cicle,omitempty"`
+	UserData     string `json:"userData,omitempty"`
 }
 
 // DeviceStatus defines the observed state of Device
 type DeviceStatus struct {
+	Ready bool `json:"ready"`
+
+	ID          string      `json:"id"`
+	State       State       `json:"state"`
+	IPAddresses []IPAddress `json:"ipAddresses,omitempty"`
+}
+
+type State string
+
+const (
+	StateActive       State = "active"
+	StateInactive     State = "inactive"
+	StateQueued       State = "queued"
+	StateProvisioning State = "provisioning"
+	StateUnknown      State = ""
+)
+
+func StringToState(state string) State {
+	switch state {
+	case string(StateActive):
+		return StateActive
+	case string(StateInactive):
+		return StateInactive
+	case string(StateQueued):
+		return StateQueued
+	case string(StateProvisioning):
+		return StateProvisioning
+	default:
+		return StateUnknown
+	}
+}
+
+type IPAddress struct {
+	ID            string `json:"id"`
+	Address       string `json:"address"`
+	Gateway       string `json:"gateway"`
+	Network       string `json:"network"`
+	AddressFamily int    `json:"addressFamily"`
+	Netmask       string `json:"netmask"`
+	Public        bool   `json:"public"`
 }
 
 // +genclient
